@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easmed - TEAM Bingo Hunt</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: #0f3460; 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                              url('background.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            color: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            overflow-x: hidden;
+        }
+
+        /* --- LANDING PAGE VIEW --- */
+        #landingView {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .play-btn {
+            background: #e94560;
+            color: white;
+            padding: 20px 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 30px;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: #ff4d6d;
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
+        }
+
+        /* --- GAMES PAGE VIEW --- */
+        #gameView {
+            display: none; 
+            opacity: 0;
+            gap: 40px;
+            max-width: 1100px;
+            width: 100%;
+            transition: opacity 0.8s ease;
+        }
+
+        .sidebar {
+            flex: 1.2;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar h2 { color: #f7d794; font-size: 1.4rem; border-bottom: 1px solid rgba(247, 215, 148, 0.3); padding-bottom: 10px; }
+        .sidebar p, .sidebar li { color: #d1ccc0; font-size: 0.95rem; line-height: 1.6; }
+
+        .container { 
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 2.5rem; 
+            border-radius: 20px; 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center; 
+        }
+
+        .logo { width: 220px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+        h1 { color: #f7d794; text-transform: uppercase; font-size: 1.8rem; letter-spacing: 2px; }
+        
+        input[type="email"] { 
+            width: 100%; padding: 15px; border-radius: 8px; border: 2px solid #e94560; 
+            background: rgba(0, 0, 0, 0.5); color: white; margin-bottom: 20px; outline: none;
+        }
+        
+        #drawBtn { background: #e94560; width: 100%; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; color: white; margin-bottom: 10px; }
+        #drawBtn:hover:not(:disabled) { background: #ff4d6d; }
+        #drawBtn:disabled { background: #555; cursor: not-allowed; }
+
+        #downloadBtn { 
+            display: none; background: transparent; border: 1px solid #f7d794; color: #f7d794; 
+            width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        #downloadBtn:hover { background: rgba(247, 215, 148, 0.1); color: white; }
+
+        .numbers-display { display: flex; justify-content: center; gap: 10px; margin-top: 25px; min-height: 65px; }
+        .ball { 
+            width: 55px; height: 55px; background: radial-gradient(circle at 18px 18px, #ffffff, #f7d794); 
+            color: #1a1a2e; border-radius: 50%; display: flex; justify-content: center; 
+            align-items: center; font-weight: 800; font-size: 1.3rem;
+            animation: bounceIn 0.5s ease forwards;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .fade-out { opacity: 0; transform: scale(0.9); pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <div id="landingView">
+        <img src="logo.png" alt="Easmed Logo" style="width: 400px; margin-bottom: 30px;">
+        <h1 style="font-size: 3rem;">Game 2 TEAM B I N G O</h1>
+        <p style="color: #f7d794; letter-spacing: 2px;">BINGO HUNT EDITION</p>
+        <button class="play-btn" onclick="startGame()">START GAME</button>
+    </div>
+
+    <div id="gameView" class="main-wrapper">
+        <div class="sidebar">
+            <h2>🎲 The Objective</h2>
+            <p>Each player is a <b>"piece"</b> of a puzzle. Your goal is to find 4 other colleagues whose combined sets of numbers match a specific "Winning Master List" announced by the host.</p>
+            <h2>🏃 Instructions</h2>
+            <ol>
+                <li><b>Get Your Numbers:</b> Use the draw on the right.</li>
+                <li><b>The Draw Begins:</b> Daily we will release 2 numbers (GET READY BY 1st APRIL).</li>
+                <li><b>The Hunt Begins:</b> Circulate and find 4 others to create a <b>Team of 5</b>.</li>
+                <li><b>Match the "BINGO":</b> Your group must form BINGO line horizontally.</li>
+                <li><b>The Shout:</b> Message us your team members when you have BINGO!</li>
+                <li><b>Points:</b>
+                    <ul>
+                        <li>1st: 2000 POINTS</li>
+                        <li>2nd: 1500 POINTS</li>
+                        <li>3rd: 1000 POINTS</li>
+                        <li>Participation (with submission): 500 Points</li>
+                        <li>Participation only: 100 POINTS</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="container" id="drawContainer">
+            <img src="logo.png" alt="Easmed Logo" class="logo">
+            <h1>Draw Numbers</h1>
+            <input type="email" id="emailInput" placeholder="Enter Easmed Email">
+            <button id="drawBtn" onclick="handleDraw()">Generate Lucky Numbers</button>
+            <button id="downloadBtn" onclick="downloadResult()">Download My Numbers</button>
+            <div id="msg" style="margin-top: 15px; font-size: 0.85rem; color: #f7d794; font-weight: bold;"></div>
+            <div class="numbers-display" id="numbersDisplay"></div>
+        </div>
+    </div>
+
+<script>
+    const MY_SHEET_API = "https://sheetdb.io/api/v1/uxmdgwdwc9gtu"; 
+    let globalNumbers = [];
+
+    function startGame() {
+        const landing = document.getElementById('landingView');
+        const game = document.getElementById('gameView');
+        landing.classList.add('fade-out'); 
+        setTimeout(() => {
+            landing.style.display = 'none'; 
+            game.style.display = 'flex'; 
+            setTimeout(() => { game.style.opacity = '1'; }, 50);
+        }, 500);
+    }
+
+    async function handleDraw() {
+        const emailInput = document.getElementById('emailInput');
+        const email = emailInput.value.trim().toLowerCase();
+        const drawBtn = document.getElementById('drawBtn');
+        const msg = document.getElementById('msg');
+        const display = document.getElementById('numbersDisplay');
+
+        display.innerHTML = '';
+        msg.innerText = "";
+
+        if (!email.endsWith('@easmed.com')) {
+            alert("Please use an @easmed.com email.");
+            return;
+        }
+
+        drawBtn.disabled = true;
+        drawBtn.innerText = "Verifying...";
+
+        try {
+            const check = await fetch(`${MY_SHEET_API}/search?Email=${email}`);
+            const existing = await check.json();
+            
+            if (existing.length > 0) {
+                alert("Duplicate Entry: You have already drawn your numbers!");
+                drawBtn.disabled = false;
+                drawBtn.innerText = "Generate Lucky Numbers";
+                return;
+            }
+        } catch (e) { console.log("Network error."); }
+
+        msg.innerText = "Lucky numbers generated!";
+        globalNumbers = generateNumbers();
+        saveToSheet(email, globalNumbers);
+        
+        emailInput.readOnly = true;
+        drawBtn.innerText = "Draw Complete";
+        
+        // Show download button
+        document.getElementById('downloadBtn').style.display = 'block';
+    }
+
+    function generateNumbers() {
+        const display = document.getElementById('numbersDisplay');
+        let luckyNumbers = [];
+        while(luckyNumbers.length < 4) {
+            let r = Math.floor(Math.random() * 75) + 1;
+            if(!luckyNumbers.includes(r)) luckyNumbers.push(r);
+        }
+        luckyNumbers.sort((a, b) => a - b).forEach((num, index) => {
+            setTimeout(() => {
+                const ball = document.createElement('div');
+                ball.className = 'ball';
+                ball.innerText = num;
+                display.appendChild(ball);
+            }, index * 200); 
+        });
+        return luckyNumbers;
+    }
+
+    function downloadResult() {
+        const email = document.getElementById('emailInput').value;
+        const content = `Easmed Bingo Hunt - Round 2\nEmail: ${email}\nYour Lucky Numbers: ${globalNumbers.join(', ')}\nDate: ${new Date().toLocaleDateString()}`;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Easmed_Bingo_${email.split('@')[0]}.txt`;
+        a.click();
+    }
+
+    async function saveToSheet(email, numbers) {
+        const data = { 
+            "Email": email, 
+            "Numbers": numbers.join(', '), 
+            "Timestamp": new Date().toLocaleString() 
+        };
+        await fetch(MY_SHEET_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data: [data] })
+        });
+    }
+</script>
+
+</body>
+</html>
